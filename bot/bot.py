@@ -728,6 +728,25 @@ class OAuthHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(404)
             self.send_header('Content-Type', 'text/plain')
             self.end_headers()
+
+@bot.hybrid_command(name='status')
+async def status_command(ctx):
+    """Check if the bot is online"""
+    try:
+        embed = discord.Embed(
+            title="✅ Bot Status",
+            description="The bot is **ONLINE** and ready to use!",
+            color=0x57F287,
+            timestamp=datetime.now()
+        )
+        embed.add_field(name="🤖 Bot Name", value=f"{bot.user.name}#{bot.user.discriminator}", inline=True)
+        embed.add_field(name="🆔 Bot ID", value=f"`{bot.user.id}`", inline=True)
+        embed.add_field(name="📊 Servers", value=f"{len(bot.guilds)}", inline=True)
+        embed.set_footer(text="Members Grow • Status Check")
+        await ctx.send(embed=embed)
+    except Exception as e:
+        await ctx.send(f"❌ Error checking status: {str(e)}")
+
             self.wfile.write(b'Not Found')
     
     def log_message(self, format, *args):
